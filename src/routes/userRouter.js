@@ -1,18 +1,18 @@
 const express = require("express");
 const { userAuth } = require("../middlewares/auth");
 const userRouter = express.Router();
-
-app.get("/feed", userAuth, async (req, res) => {
+const userModal = require("../models/user.js");
+userRouter.get("/feed", userAuth, async (req, res) => {
   try {
     const allUsers = await userModal.find({});
     res.status(200);
-    res.send(allUsers);
+    res.json(allUsers);
   } catch (err) {
     res.status(500).send("some error occured" + err.message);
   }
 });
 
-app.get("/users", async (req, res) => {
+userRouter.get("/users", async (req, res) => {
   const email = req.body.email;
   try {
     const userFound = await userModal.find({ email: email });
@@ -27,7 +27,7 @@ app.get("/users", async (req, res) => {
   }
 });
 
-app.patch("/user", async (req, res) => {
+userRouter.patch("/user", async (req, res) => {
   const id = req.body.id;
   const updates = req.body;
   const allowedUpdates = ["age"];

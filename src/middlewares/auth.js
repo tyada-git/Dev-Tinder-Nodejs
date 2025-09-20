@@ -5,7 +5,7 @@ const userAuth = async (req, res, next) => {
   try {
     const token = req.cookies.token_id;
     if (!token) {
-      return res.status(401).send("unauthenticated user");
+      return res.status(401).send("unauthenticated user no token");
     }
     const verifyUserFromToken = await jwt.verify(token, "devtindersecret");
 
@@ -13,7 +13,7 @@ const userAuth = async (req, res, next) => {
       _id: verifyUserFromToken.id,
     });
 
-    if (isUserPresent.length !== 0) {
+    if (isUserPresent) {
       req.user = isUserPresent;
       next();
     } else {
